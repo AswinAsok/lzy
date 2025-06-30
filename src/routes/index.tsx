@@ -1,16 +1,20 @@
+import { createFileRoute } from '@tanstack/react-router';
+import { useDashboardData } from '../hooks/useDashboardData';
+import { useTaskManagement } from '../hooks/useTaskManagement';
 import { useState } from 'react';
-// import { Header } from './components/Header';
-import { StatsOverview } from './components/StatsOverview';
-import { RepositoryCard } from './components/RepositoryCard';
-import { TeamOverview } from './components/TaskManagement/TeamOverview';
-import { UserTaskBoard } from './components/TaskManagement/UserTaskBoard';
-import { useDashboardData } from './hooks/useDashboardData';
-import { useTaskManagement } from './hooks/useTaskManagement';
-import { Users, GitBranch } from 'lucide-react';
+import { GitBranch, Users } from 'lucide-react';
+import { StatsOverview } from '../components/StatsOverview';
+import { RepositoryCard } from '../components/RepositoryCard';
+import { TeamOverview } from '../components/TaskManagement/TeamOverview';
+import { UserTaskBoard } from '../components/TaskManagement/UserTaskBoard';
 
 type ViewMode = 'repositories' | 'tasks';
 
-function AppContent() {
+export const Route = createFileRoute('/')({
+  component: Dashboard,
+});
+
+function Dashboard() {
   const { repositories, stats, isLoading } = useDashboardData();
   const {
     users,
@@ -114,9 +118,3 @@ function AppContent() {
     </div>
   );
 }
-
-function App() {
-  return <AppContent />;
-}
-
-export default App;
