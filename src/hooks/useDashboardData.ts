@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { getNetlifyUserBuildInformation, getNetlifyUserInformation } from '../apis/netlify/netlify';
 
 // Mock data - in production, this would come from GitHub and Netlify APIs
 const mockRepositories = [
@@ -185,24 +186,9 @@ const mockRepositories = [
   },
 ];
 
-const mockNetlifyAccounts = [
-  {
-    name: 'Production',
-    usedMinutes: 180,
-    totalMinutes: 300,
-    percentage: 60,
-  },
-  {
-    name: 'Development',
-    usedMinutes: 45,
-    totalMinutes: 200,
-    percentage: 22.5,
-  },
-];
-
 export const useDashboardData = () => {
   const [repositories, setRepositories] = useState(mockRepositories);
-  const [netlifyAccounts, setNetlifyAccounts] = useState(mockNetlifyAccounts);
+  const [netlifyAccounts, setNetlifyAccounts] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState(new Date());
 
@@ -214,7 +200,7 @@ export const useDashboardData = () => {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       setRepositories(mockRepositories);
-      setNetlifyAccounts(mockNetlifyAccounts);
+      // setNetlifyAccounts();
       setLastUpdated(new Date());
       setIsLoading(false);
     };
@@ -224,6 +210,25 @@ export const useDashboardData = () => {
     // Set up auto-refresh every 5 minutes
     const interval = setInterval(fetchData, 5 * 60 * 1000);
     return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    getNetlifyUserInformation(import.meta.env.VITE_SHAHEEN_NETLIFY_ACCESS_TOKEN)
+      .then((accountId) => {
+        const buildInformation = getNetlifyUserBuildInformation(
+          accountId,
+          import.meta.env.VITE_SHAHEEN_NETLIFY_ACCESS_TOKEN,
+        );
+
+        setNetlifyAccounts((prevAccounts) => ({
+          ...prevAccounts,
+          [accountId]: buildInformation,
+        }));
+      })
+      .catch((error) => {
+        console.error('Error fetching Netlify user information:', error);
+        // Handle error appropriately, e.g., show a notification or fallback data
+      });
   }, []);
 
   const stats = {
