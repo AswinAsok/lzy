@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getNetlifyUserBuildInformation, getNetlifyUserInformation } from '../apis/netlify/netlify';
+// import { getNetlifyUserBuildInformation, getNetlifyUserInformation } from '../apis/netlify/netlify';
 
 // Mock data - in production, this would come from GitHub and Netlify APIs
 const mockRepositories = [
@@ -188,7 +188,7 @@ const mockRepositories = [
 
 export const useDashboardData = () => {
   const [repositories, setRepositories] = useState(mockRepositories);
-  const [netlifyAccounts, setNetlifyAccounts] = useState();
+  // const [netlifyAccounts, setNetlifyAccounts] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState(new Date());
 
@@ -241,7 +241,7 @@ export const useDashboardData = () => {
 
   return {
     repositories,
-    netlifyAccounts,
+    // netlifyAccounts,
     stats,
     isLoading,
     lastUpdated,

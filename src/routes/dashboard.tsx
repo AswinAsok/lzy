@@ -7,14 +7,19 @@ import { StatsOverview } from '../components/StatsOverview';
 import { RepositoryCard } from '../components/RepositoryCard';
 import { TeamOverview } from '../components/TaskManagement/TeamOverview';
 import { UserTaskBoard } from '../components/TaskManagement/UserTaskBoard';
+import { useQuery } from '@tanstack/react-query';
+import { getNetlifyUserBuildInformation, getNetlifyUserInformation } from '../apis/netlify/netlify';
+import { Header } from '../components/Header';
 
 type ViewMode = 'repositories' | 'tasks';
 
-export const Route = createFileRoute('/')({
+export const Route = createFileRoute('/dashboard')({
   component: Dashboard,
 });
 
 function Dashboard() {
+  const [viewMode, setViewMode] = useState<ViewMode>('repositories');
+
   const { repositories, stats, isLoading } = useDashboardData();
   const {
     users,
@@ -24,9 +29,35 @@ function Dashboard() {
     getTasksForUser,
     getTaskStats,
   } = useTaskManagement();
-
-  const [viewMode, setViewMode] = useState<ViewMode>('repositories');
   const taskStats = getTaskStats();
+
+  const enhancedStats = {
+    ...stats,
+    ...taskStats,
+  };
+
+  const { data: shaheenAccountID } = useQuery({
+    initialData: null,
+    queryKey: ['getShaheenUserInformation'],
+    queryFn: () => getNetlifyUserInformation(import.meta.env.VITE_SHAHEEN_NETLIFY_ACCESS_TOKEN),
+  });
+
+  const { data: aswinAccountID } = useQuery({
+    initialData: null,
+    queryKey: ['getAswinUserInformation'],
+    queryFn: () => getNetlifyUserInformation(import.meta.env.VITE_ASWIN_NETLIFY_ACCESS_TOKEN),
+  });
+
+  const { data: shaheenBuildInformation } = useQuery({
+    initialData: [],
+    queryKey: ['getShaheenUserBuildInformation', shaheenAccountID],
+    queryFn: () =>
+      getNetlifyUserBuildInformation(
+        shaheenAccountID,
+        import.meta.env.VITE_SHAHEEN_NETLIFY_ACCESS_TOKEN,
+      ),
+    enabled: !!shaheenAccountID,
+  });
 
   if (isLoading || tasksLoading) {
     return (
@@ -39,14 +70,9 @@ function Dashboard() {
     );
   }
 
-  const enhancedStats = {
-    ...stats,
-    ...taskStats,
-  };
-
   return (
     <div className='min-h-screen bg-gray-50 dark:bg-gray-950'>
-      {/* <Header netlifyAccounts={netlifyAccounts} /> */}
+      <Header />
 
       <main className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
         {/* View Mode Toggle */}
