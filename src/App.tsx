@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import { ThemeProvider } from './contexts/ThemeContext';
-import { Header } from './components/Header';
+// import { Header } from './components/Header';
 import { StatsOverview } from './components/StatsOverview';
 import { RepositoryCard } from './components/RepositoryCard';
 import { TeamOverview } from './components/TaskManagement/TeamOverview';
@@ -12,10 +11,9 @@ import { Users, GitBranch } from 'lucide-react';
 type ViewMode = 'repositories' | 'tasks';
 
 function AppContent() {
-  const { repositories, netlifyAccounts, stats, isLoading } = useDashboardData();
+  const { repositories, stats, isLoading } = useDashboardData();
   const {
     users,
-    tasks,
     isLoading: tasksLoading,
     updateTaskStatus,
     updateTaskTime,
@@ -44,7 +42,7 @@ function AppContent() {
 
   return (
     <div className='min-h-screen bg-gray-50 dark:bg-gray-950'>
-      <Header netlifyAccounts={netlifyAccounts} />
+      {/* <Header netlifyAccounts={netlifyAccounts} /> */}
 
       <main className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
         {/* View Mode Toggle */}
@@ -118,11 +116,7 @@ function AppContent() {
 }
 
 function App() {
-  return (
-    <ThemeProvider>
-      <AppContent />
-    </ThemeProvider>
-  );
+  return <AppContent />;
 }
 
 export default App;

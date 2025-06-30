@@ -212,24 +212,24 @@ export const useDashboardData = () => {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    getNetlifyUserInformation(import.meta.env.VITE_SHAHEEN_NETLIFY_ACCESS_TOKEN)
-      .then((accountId) => {
-        const buildInformation = getNetlifyUserBuildInformation(
-          accountId,
-          import.meta.env.VITE_SHAHEEN_NETLIFY_ACCESS_TOKEN,
-        );
+  // useEffect(() => {
+  //   getNetlifyUserInformation(import.meta.env.VITE_SHAHEEN_NETLIFY_ACCESS_TOKEN)
+  //     .then((accountId) => {
+  //       const buildInformation = getNetlifyUserBuildInformation(
+  //         accountId,
+  //         import.meta.env.VITE_SHAHEEN_NETLIFY_ACCESS_TOKEN,
+  //       );
 
-        setNetlifyAccounts((prevAccounts) => ({
-          ...prevAccounts,
-          [accountId]: buildInformation,
-        }));
-      })
-      .catch((error) => {
-        console.error('Error fetching Netlify user information:', error);
-        // Handle error appropriately, e.g., show a notification or fallback data
-      });
-  }, []);
+  //       setNetlifyAccounts((prevAccounts) => ({
+  //         ...prevAccounts,
+  //         [accountId]: buildInformation,
+  //       }));
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error fetching Netlify user information:', error);
+  //       // Handle error appropriately, e.g., show a notification or fallback data
+  //     });
+  // }, []);
 
   const stats = {
     totalRepos: repositories.length,
