@@ -87,9 +87,8 @@ const UsageDashboard = ({
       {/* Usage Progress */}
       <div className='mb-6'>
         <div className='flex items-end justify-between mb-2'>
-          <span className='text-2xl font-bold text-slate-900'>{usageData.minutes.current}</span>
-          <span className='text-sm text-slate-500'>
-            of {usageData.minutes.included_minutes} minutes
+          <span className='text-2xl font-bold text-slate-900'>
+            {usageData.minutes.current} mins
           </span>
         </div>
         <div className='relative w-full bg-slate-200 rounded-full h-2'>
