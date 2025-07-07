@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 export const getNetlifyUserInformation = (accessToken: string) => {
-  console.log(import.meta.env.VITE_SHAHEEN_NETLIFY_ACCESS_TOKEN);
   return axios
     .get('https://api.netlify.com/api/v1/user', {
       headers: {
