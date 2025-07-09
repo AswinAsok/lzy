@@ -31,3 +31,17 @@ export const getNetlifyUserBuildInformation = (accountId: string, accessToken: s
       throw error;
     });
 };
+
+export const getNetlifyAccountSites = (accountId: string, accessToken: string) => {
+  return axios
+    .get(`https://api.netlify.com/api/v1/${accountId}/sites`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+    .then((response) => response.data)
+    .catch((error) => {
+      console.error('Failed to fetch Netlify account sites:', error);
+      throw error;
+    });
+};
